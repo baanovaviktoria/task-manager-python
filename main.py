@@ -13,7 +13,7 @@ next_id = 1
 
 def show_menu():
 
-    print("\n=== Система управления задачами ===")
+    print("\n~ Менеджер управления задачами ~")
 
     print("1. Добавить задачу")
     print("2. Показать задачи")
@@ -27,8 +27,9 @@ def show_menu():
     print("8. Показать очередь")
 
     print("9. Показать задачи по дедлайну")
-    print("10. Самый ранний дедлайн")
-    print("11. Самый поздний дедлайн")
+    print('10. Показать задачи по приоритету')
+    print("11. Самый ранний дедлайн")
+    print("12. Самый поздний дедлайн")
 
     print("0. Выход")
 
@@ -167,6 +168,12 @@ while True:
         tree.inorder()
 
     elif choice == "10":
+        sorted_tasks = sorted(manager.tasks, key=lambda task: task.priority, reverse=True)
+
+        print("\nЗадачи по возрастанию приоритета:\n")
+        print(sorted_tasks)
+
+    elif choice == "11":
 
         tree = DeadlineBST()
 
@@ -184,7 +191,7 @@ while True:
 
             print("Список задач пуст.")
 
-    elif choice == "11":
+    elif choice == "12":
 
         tree = DeadlineBST()
 
