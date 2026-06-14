@@ -14,10 +14,12 @@ class DeadlineBST:
     def __init__(self): 
         self.root = None
 
-    def insert(self, task): # Вставка корневого узла
+    # Вставка корневого узла
+    def insert(self, task): 
         self.root = self._insert(self.root, task)
 
-    def _insert(self, node, task): # Вставка дочерних узлов
+    # Вставка дочерних узлов
+    def _insert(self, node, task): 
         if node is None:
             return TreeNode(task)
 
