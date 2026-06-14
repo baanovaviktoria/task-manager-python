@@ -1,20 +1,27 @@
 class TreeNode:
-    def __init__(self, task): # инициализация создания узла
+    """
+    Создержит задачу и указатели на потомков.
+    """
+    def __init__(self, task): 
         self.task = task
         self.left = None
         self.right = None
 
 class DeadlineBST:
-    def __init__(self): # инициализация создания бинарного дерева поиска
+    """
+    Бинарное дерево поиска, упорядоченное по дате дедлайна задачи (от ранних к поздним).
+    """
+    def __init__(self): 
         self.root = None
 
-    def insert(self, task): # вставка корневого узла
+    def insert(self, task): # Вставка корневого узла
         self.root = self._insert(self.root, task)
 
-    def _insert(self, node, task): # вставка дочерних узлов
+    def _insert(self, node, task): # Вставка дочерних узлов
         if node is None:
             return TreeNode(task)
 
+        # Сравниваем строки вида "YYYY-MM-DD" для верного хронологического порядка
         if task.deadline < node.task.deadline:
             node.left = self._insert(node.left, task)
         else:
@@ -22,10 +29,16 @@ class DeadlineBST:
 
         return node
     
-    def inorder(self): # симметричный обход от корня
+    def inorder(self):
+        """
+        Печатает все задачи, используя лево-корень-право обход.
+        """
         self._inorder(self.root)
     
-    def _inorder(self, node): # механизм симметричного обхода
+    def _inorder(self, node): 
+        """
+        Обходит левое поддерево, печатает текущий узел, обходит правое поддерево.
+        """
         if node is None:
             return
 
@@ -35,7 +48,8 @@ class DeadlineBST:
 
         self._inorder(node.right)
 
-    def find_earliest(self): # поиск самой ранней задачи
+    # Поиск самой ранней задачи (минимального дедлайна)
+    def find_earliest(self): 
         if self.root is None:
             return None
 
@@ -46,7 +60,8 @@ class DeadlineBST:
 
         return current.task
     
-    def find_latest(self): # поиск самой поздней задачи
+    # Поиск самой поздней задачи (максимального дедлайна)
+    def find_latest(self): 
         if self.root is None:
             return None
 
