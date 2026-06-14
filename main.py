@@ -5,14 +5,16 @@ from execution_queue import ExecutionQueue
 from bst import DeadlineBST
 
 
-manager = TaskManager()
-undo_stack = UndoStack()
-execution_queue = ExecutionQueue()
+manager = TaskManager() # Менеджер для хранения задач и операций над ними
+undo_stack = UndoStack() # Стек для поддержки отмены действий
+execution_queue = ExecutionQueue() # Очередь для выполнения задач
 
 next_id = 1
 
 def show_menu():
-
+    """
+    Отображает главное меню пользователя.
+    """
     print("\n~ Менеджер управления задачами ~")
 
     print("1. Добавить задачу")
@@ -36,9 +38,10 @@ def show_menu():
 while True:
 
     show_menu()
-
+    
     choice = input("\nВыберите пункт: ")
 
+    # Создание и добавление новой задачи
     if choice == "1":
 
         title = input("Название: ")
@@ -56,6 +59,7 @@ while True:
 
         manager.add_task(task)
 
+        # Сохраняем действие в стек, чтобы было возможно отменить добавление
         undo_stack.push({
             "type": "ADD",
             "task": task
@@ -65,9 +69,11 @@ while True:
 
         print("Задача добавлена.")
 
+    # Просмотр всех задач
     elif choice == "2":
         manager.show_tasks()
 
+    # Удаление задачи по ID
     elif choice == "3":
 
         task_id = int(input("Введите ID задачи: "))
@@ -76,6 +82,7 @@ while True:
 
         if deleted_task:
 
+            # В случае отмены удаления восстанавливаем задачу
             undo_stack.push({
                 "type": "DELETE",
                 "task": deleted_task
@@ -86,6 +93,7 @@ while True:
         else:
             print("Задача не найдена.")
 
+    # Редактирование задач
     elif choice == "4":
 
         task_id = int(input("Введите ID задачи: "))
@@ -94,6 +102,7 @@ while True:
 
         if task:
 
+            # Копируем старую версию на случай, если необходимо будет вернуться к оригиналу
             old_copy = task.copy()
 
             title = input("Новое название: ")
@@ -119,10 +128,12 @@ while True:
         else:
             print("Задача не найдена.")
 
+    # Отмена последнего действия
     elif choice == "5":
 
         manager.undo(undo_stack)
 
+    # Добавление существующей задачи в очередь выполнения
     elif choice == "6":
 
         task_id = int(input("Введите ID задачи: "))
@@ -131,6 +142,7 @@ while True:
 
         if task:
 
+            # Добавляем в конец очереди
             execution_queue.enqueue(task)
 
             print("Задача добавлена в очередь.")
@@ -139,6 +151,7 @@ while True:
 
             print("Задача не найдена.")
 
+    # Выполнение задачи из начала очереди
     elif choice == "7":
 
         completed_task = execution_queue.dequeue()
@@ -152,14 +165,16 @@ while True:
 
             print("Очередь пуста.")
 
+    # Просмотр содержимого очереди
     elif choice == "8":
 
         execution_queue.show_queue()
 
+    # Сортировка задач по дедлайну 
     elif choice == "9":
 
         tree = DeadlineBST()
-
+        # Создаём бинарное дерево поиска (ключ - дата дедлайна)
         for task in manager.tasks:
             tree.insert(task)
 
@@ -167,12 +182,14 @@ while True:
 
         tree.inorder()
 
+    # Сортировка от высшего к низшему
     elif choice == "10":
         sorted_tasks = sorted(manager.tasks, key=lambda task: task.priority, reverse=True)
 
         print("\nЗадачи по возрастанию приоритета:\n")
         print(sorted_tasks)
 
+    # Поиск задачи с самым ранним (минимальным) дедлайном
     elif choice == "11":
 
         tree = DeadlineBST()
@@ -180,7 +197,7 @@ while True:
         for task in manager.tasks:
             tree.insert(task)
 
-        earliest = tree.find_earliest()
+        earliest = tree.find_earliest() # Самый левый узел
 
         if earliest:
 
@@ -191,6 +208,7 @@ while True:
 
             print("Список задач пуст.")
 
+    # Поиск задачи с самым поздним (максимальным) дедлайном
     elif choice == "12":
 
         tree = DeadlineBST()
@@ -198,7 +216,7 @@ while True:
         for task in manager.tasks:
             tree.insert(task)
 
-        latest = tree.find_latest()
+        latest = tree.find_latest() # Самый правый узел
 
         if latest:
 
@@ -209,12 +227,14 @@ while True:
 
             print("Список задач пуст.")
 
+    # Выход из программы
     elif choice == "0":
 
         print("До свидания!")
 
         break
 
+    # Если команда неизвестна
     else:
 
         print("Неверный пункт меню.")
