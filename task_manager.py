@@ -1,11 +1,23 @@
 class TaskManager:
-    def __init__(self): # инициализация работы менеджера задач
+    """
+    Управляет списком задач: 
+    - добавление; 
+    - удаление;
+    - редактирование; 
+    - отмена действий
+    """
+    def __init__(self): 
+        """
+        Инициализация работы менеджера задач
+        """
         self.tasks = []
 
-    def add_task(self, task): # добавление задачи
+    # Добавление задачи в конец списка
+    def add_task(self, task): 
         self.tasks.append(task)
 
-    def show_tasks(self): # показ задач
+    # Выводит все задачи 
+    def show_tasks(self): 
         if not self.tasks:
             print('В списке задач пока пусто!')
             return
@@ -15,7 +27,8 @@ class TaskManager:
         for task in self.tasks:
             print(task)
 
-    def find_task(self, task_id): # поиск задачи по ID
+    # Ищет задачу по ID
+    def find_task(self, task_id): 
         for task in self.tasks:
 
             if task.task_id == task_id:
@@ -23,7 +36,8 @@ class TaskManager:
 
         return None
     
-    def delete_task(self, task_id): # удаление задачи
+    # Удаляет задачу с указанным ID
+    def delete_task(self, task_id): 
 
         for task in self.tasks:
 
@@ -33,7 +47,8 @@ class TaskManager:
 
         return None
 
-    def edit_task(self, task_id, new_title, new_priority, new_execution_time, new_deadline): # редактирование задачи
+    # Редактирует задачу
+    def edit_task(self, task_id, new_title, new_priority, new_execution_time, new_deadline): 
 
         task = self.find_task(task_id)
 
@@ -48,6 +63,7 @@ class TaskManager:
 
         return False
     
+    # Отменяет последнее действие
     def undo(self, undo_stack):
 
         action = undo_stack.pop()
@@ -59,19 +75,19 @@ class TaskManager:
         action_type = action["type"]
 
         if action_type == "ADD":
-
+            # Отменяем добавление (удаляем добавленную задачу)
             self.delete_task(action["task"].task_id)
 
             print("Добавление отменено.")
 
         elif action_type == "DELETE":
-
+            # Отменяем удалению (возвращаем удалённую задачу)
             self.add_task(action["task"])
 
             print("Удаление отменено.")
 
         elif action_type == "EDIT":
-
+            # Отменяем редактирование (восстанавливаем старую версию задачи)
             old_task = action["old_task"]
 
             task = self.find_task(old_task.task_id)
