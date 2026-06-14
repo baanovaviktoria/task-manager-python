@@ -36,9 +36,7 @@ def show_menu():
     print("0. Выход")
 
 while True:
-
     show_menu()
-    
     choice = input("\nВыберите пункт: ")
 
     # Создание и добавление новой задачи
@@ -75,9 +73,7 @@ while True:
 
     # Удаление задачи по ID
     elif choice == "3":
-
         task_id = int(input("Введите ID задачи: "))
-
         deleted_task = manager.delete_task(task_id)
 
         if deleted_task:
@@ -95,9 +91,7 @@ while True:
 
     # Редактирование задач
     elif choice == "4":
-
         task_id = int(input("Введите ID задачи: "))
-
         task = manager.find_task(task_id)
 
         if task:
@@ -130,30 +124,23 @@ while True:
 
     # Отмена последнего действия
     elif choice == "5":
-
         manager.undo(undo_stack)
 
     # Добавление существующей задачи в очередь выполнения
     elif choice == "6":
-
         task_id = int(input("Введите ID задачи: "))
-
         task = manager.find_task(task_id)
 
         if task:
-
             # Добавляем в конец очереди
             execution_queue.enqueue(task)
-
             print("Задача добавлена в очередь.")
 
         else:
-
             print("Задача не найдена.")
 
     # Выполнение задачи из начала очереди
     elif choice == "7":
-
         completed_task = execution_queue.dequeue()
 
         if completed_task:
@@ -162,17 +149,14 @@ while True:
             print(completed_task)
 
         else:
-
             print("Очередь пуста.")
 
     # Просмотр содержимого очереди
     elif choice == "8":
-
         execution_queue.show_queue()
 
     # Сортировка задач по дедлайну 
     elif choice == "9":
-
         tree = DeadlineBST()
         # Создаём бинарное дерево поиска (ключ - дата дедлайна)
         for task in manager.tasks:
@@ -191,7 +175,6 @@ while True:
 
     # Поиск задачи с самым ранним (минимальным) дедлайном
     elif choice == "11":
-
         tree = DeadlineBST()
 
         for task in manager.tasks:
@@ -200,17 +183,14 @@ while True:
         earliest = tree.find_earliest() # Самый левый узел
 
         if earliest:
-
             print("\nСамая ранняя задача:\n")
             print(earliest)
 
         else:
-
             print("Список задач пуст.")
 
     # Поиск задачи с самым поздним (максимальным) дедлайном
     elif choice == "12":
-
         tree = DeadlineBST()
 
         for task in manager.tasks:
@@ -219,22 +199,18 @@ while True:
         latest = tree.find_latest() # Самый правый узел
 
         if latest:
-
             print("\nСамая поздняя задача:\n")
             print(latest)
 
         else:
-
             print("Список задач пуст.")
 
     # Выход из программы
     elif choice == "0":
-
         print("До свидания!")
 
         break
 
     # Если команда неизвестна
     else:
-
         print("Неверный пункт меню.")
