@@ -22,7 +22,7 @@
 * Queue (deque)
 * Binary Search Tree (BST)
 
-## Запуск
+## Запуск программы
 
 ```bash
 python main.py
